@@ -38,9 +38,11 @@ HTML;
                 $childTitle = $childFileContents->title;
                 $childNodeId = basename($child, '.node');
 
+                $selectedClass = ($this->child && $childNodeId == $this->child->id) ? "kb-selected" : "";
+
                 $returnHTML .= <<<HTML
                 <a href="/{$this->getHREF()}{$childNodeId}">
-                    <div class="">{$childTitle}</div>
+                    <div class="{$selectedClass}">{$childTitle}</div>
                 </a>
 HTML;
             }
@@ -117,6 +119,11 @@ echo $tempRoot->toHTML();
         display:inline-block;
         border:solid 1px black;
         height:300px;
+    }
+
+    .kb-selected{
+        background-color:green;
+        color:white;
     }
 
 </style>
