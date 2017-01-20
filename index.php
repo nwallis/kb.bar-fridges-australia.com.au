@@ -38,10 +38,6 @@ HTML;
                 $childTitle = $childFileContents->title;
                 $childNodeId = basename($child, '.node');
 
-                if ($this->id = 'content'){
-                    error_log(print_r($this->child->id,true)); 
-                }
-                
                 $returnHTML .= <<<HTML
                 <a href="/{$this->getHREF()}{$childNodeId}">
                     <div class="">{$childTitle}</div>
@@ -98,7 +94,6 @@ foreach ($nodePaths as $path){
 
     $tempRoot = $childNode;
 }
-
 ?>
 
 
