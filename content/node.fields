@@ -1,0 +1,10 @@
+{
+    "fields":[
+        {"key_name":"title","name":"Fridge Model","type":"String"}
+    ],
+    "childFields": {"fields":[
+        {"name":"Question","type":"String","key_name":"title"},
+        {"name":"Answer","type":"String","key_name":"text"}
+    ], "seo_translate_key":"title"},
+    "seo_translate_key":"title"
+}
