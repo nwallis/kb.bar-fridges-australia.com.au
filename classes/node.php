@@ -62,7 +62,15 @@ HTML;
 
             foreach ($fieldDescriptors->fields as $descriptor){
 
-                $inputClass = isset($fieldDescriptors->seo_translate_key) && ($fieldDescriptors->seo_translate_key == $descriptor->key_name) ? "kb-seo-translate" : "";
+                $inputClass = '';
+
+                if (isset($fieldDescriptors->seo_translate_key) && ($fieldDescriptors->seo_translate_key == $descriptor->key_name)){
+                    $inputClass = 'seo-name';
+                    $returnHTML .= <<<HTML
+                        <input type="hidden" class="seo-name" name="seo_name" value="">
+HTML;
+
+                }
 
                 $returnHTML .= <<<HTML
                     <label>{$descriptor->name}<input class="{$inputClass}" type="text" name="fields[{$descriptor->key_name}]"></label>
@@ -70,6 +78,7 @@ HTML;
             }
 
             $encodedContentPath = htmlspecialchars(base64_encode($this->getContentPath()));
+
 
             $returnHTML .= <<<HTML
                 <input type="hidden" name="parent_node" value="{$encodedContentPath}">
@@ -80,12 +89,7 @@ HTML;
 
         $returnHTML .= <<<HTML
 
-            <script>
-                $(".kb-seo-translate").keyup(function(){
-                    console.log($(this).val());    
-                });
-            </script>
- 
+
             </div>
 HTML;
 

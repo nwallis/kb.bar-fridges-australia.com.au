@@ -39,6 +39,21 @@ if (isset($_REQUEST['parent_node'])){
         file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
     }
 
+    //save seo name
+    if (isset($_REQUEST['seo_name'])){
+
+        //Read current map into data structure
+        $seoMap = json_decode(file_get_contents('./seo.map'));
+
+        //Modify the data structure
+        $seoMap->{$_REQUEST['seo_name']} = $guid;
+        $seoMap->{$guid} = $_REQUEST['seo_name'];
+
+        //Save structure back to file
+        file_put_contents("./seo.map", json_encode($seoMap));
+        
+    }
+
 }
 
 //Server URI needs some massaging
