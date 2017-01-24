@@ -1,25 +1,21 @@
 <?php
 
 include_once('./classes/node.php');
+include_once('./classes/SEO.php');
+
+$loader = require 'vendor/autoload.php';
 
 use Knowledgebase\Node;
+use Knowledgebase\SEO;
 
 const CONTENT_DIRECTORY = "content";
 
-function GUID()
-{
-    if (function_exists('com_create_guid') === true)
-    {
-        return trim(com_create_guid(), '{}');
-    }
-
-    return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-}
+SEO::init();
 
 if (isset($_REQUEST['parent_node'])){
 
     //Generate a new guid for node name
-    $guid = GUID();
+    $guid = SEO::GUID();
     $parentNode = base64_decode($_REQUEST['parent_node']);
     $nodeFile = "$parentNode/$guid.node";
 
@@ -40,19 +36,7 @@ if (isset($_REQUEST['parent_node'])){
     }
 
     //save seo name
-    if (isset($_REQUEST['seo_name'])){
-
-        //Read current map into data structure
-        $seoMap = json_decode(file_get_contents('./seo.map'));
-
-        //Modify the data structure
-        $seoMap->{$_REQUEST['seo_name']} = $guid;
-        $seoMap->{$guid} = $_REQUEST['seo_name'];
-
-        //Save structure back to file
-        file_put_contents("./seo.map", json_encode($seoMap));
-        
-    }
+    if (isset($_REQUEST['seo_name'])) SEO::addSEOName($guid, $_REQUEST['seo_name']);        
 
 }
 
@@ -63,6 +47,8 @@ $nodePaths = strlen($trimmedServerURI) == 0 ? [CONTENT_DIRECTORY] : array_merge(
 
 foreach ($nodePaths as $path){
 
+    //remap the path if its not the root - rethink this.
+    if ($path != CONTENT_DIRECTORY) $path = SEO::getMapping($path);
     $childNode = new Node($path);
 
     if (isset($root)){
@@ -73,6 +59,8 @@ foreach ($nodePaths as $path){
     $root = $childNode;
 }
 
+error_log(print_r($root, true));
+
 ?>
 
 
@@ -80,14 +68,13 @@ foreach ($nodePaths as $path){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="data:;base64,=">
     <title>Bar Fridges Australia Knowledgebase</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="./js/kb.js"></script>
+    <script src="/js/kb.js"></script>
 </head>
 <body>
 <?php 
-
-
 
 echo $root->toHTML(); 
 

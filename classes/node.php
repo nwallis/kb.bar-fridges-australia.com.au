@@ -1,5 +1,7 @@
 <?php
 
+use Knowledgebase\SEO;
+
 namespace Knowledgebase;
 
 class Node{
@@ -14,7 +16,7 @@ class Node{
     }
 
     function getHREF(){
-        return (isset($this->parent) ? $this->parent->getHREF() . "$this->id/" : ""); 
+        return (isset($this->parent) ? $this->parent->getHREF() . SEO::getMapping($this->id) . "/" : ""); 
     }
 
     function getContentPath(){
@@ -37,10 +39,11 @@ HTML;
                 $childNodeId = basename($child, '.node');
 
                 $selectedClass = ($this->child && $childNodeId == $this->child->id) ? "kb-selected" : "";
+                $childSEOName = SEO::getMapping($childNodeId);
 
                 $returnHTML .= <<<HTML
-                <a href="/{$this->getHREF()}{$childNodeId}">
-                    <div class="{$selectedClass}">{$childTitle}</div>
+                <a href="/{$this->getHREF()}{$childSEOName}">
+                    <div class="{$selectedClass}">{$childSEOName}</div>
                 </a>
 HTML;
             }
@@ -65,7 +68,7 @@ HTML;
                 $inputClass = '';
 
                 if (isset($fieldDescriptors->seo_translate_key) && ($fieldDescriptors->seo_translate_key == $descriptor->key_name)){
-                    $inputClass = 'seo-name';
+                    $inputClass = 'kb-seo-translate';
                     $returnHTML .= <<<HTML
                         <input type="hidden" class="seo-name" name="seo_name" value="">
 HTML;
