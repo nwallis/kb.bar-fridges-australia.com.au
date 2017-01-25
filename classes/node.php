@@ -43,7 +43,7 @@ HTML;
 
                 $returnHTML .= <<<HTML
                 <a href="/{$this->getHREF()}{$childSEOName}">
-                    <div class="{$selectedClass}">{$childSEOName}</div>
+                    <div class="{$selectedClass}">{$childTitle}</div>
                 </a>
 HTML;
             }
