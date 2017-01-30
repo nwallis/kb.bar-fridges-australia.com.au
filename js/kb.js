@@ -7,18 +7,31 @@ $(function() {
 
     $(".settings-dialog").dialog({
         autoOpen: false,
-        modal:true,
-        title:"Add new",
-        width:800
+        modal: true,
+        title: "Add new",
+        width: 800
     });
 
-    $(".add-node").click(function(){
+    $(".add-node").click(function() {
+
         var dialog = $(this).attr('for');
         $("#" + dialog).dialog("open");
+
+        tinymce.init({
+            selector: '#' + dialog + ' textarea'
+        });
+
     });
 
     $(".fridge-picture").elevateZoom();
 
+});
+
+$(document).on('focusin', function(e) {
+    console.log(e);
+    if ($(e.target).closest(".mce-window, .moxman-window").length) {
+        e.stopImmediatePropagation();
+    }
 });
 
 function convertToSEO(inputString) {
