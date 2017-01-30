@@ -11,3 +11,5 @@
 /vendor
 .DS_Store
 /images/*.jpg
+.htaccess
+seo.map
