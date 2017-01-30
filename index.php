@@ -2,14 +2,17 @@
 
 include_once('./classes/node.php');
 include_once('./classes/SEO.php');
+include_once('./classes/SmartyWrapper.php');
 
 $loader = require 'vendor/autoload.php';
 
 use Knowledgebase\Node;
 use Knowledgebase\SEO;
+use Knowledgebase\SmartyWrapper;
 
 const CONTENT_DIRECTORY = "content";
 
+SmartyWrapper::init();
 SEO::init();
 
 if (isset($_REQUEST['parent_node'])){
@@ -22,6 +25,16 @@ if (isset($_REQUEST['parent_node'])){
     $fieldsDescriptionPath = "$parentNode/node.fields";
     $childDescriptionDirectory = "$parentNode$guid.children/";
     $fieldDescriptors = json_decode(file_get_contents($fieldsDescriptionPath));
+
+    foreach ($fieldDescriptors->fields as &$descriptor){
+        switch ($descriptor->type){
+        case "Image":
+            $savePath = "./images/" . SEO::GUID() . ".jpg";
+            move_uploaded_file($_FILES['image']['tmp_name'], $savePath);
+            $_REQUEST['fields'][$descriptor->key_name] = $savePath;
+            break;
+        }  
+    }
 
     //Build JSON to save in new node
     $newNodeJSON = json_encode($_REQUEST['fields']);
@@ -59,10 +72,7 @@ foreach ($nodePaths as $path){
     $root = $childNode;
 }
 
-error_log(print_r($root, true));
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,31 +80,21 @@ error_log(print_r($root, true));
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,=">
     <title>Bar Fridges Australia Knowledgebase</title>
+
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="/js/jquery.elevateZoom-3.0.8.min.js"></script>
     <script src="/js/kb.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+
+    <link rel="stylesheet" href="/css/kb.css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
+
 </head>
 <body>
-<?php 
 
-echo $root->toHTML(); 
-
-?>
-
-<style>
-
-    .kb-section{
-        padding:50px;
-        display:inline-block;
-        border:solid 1px black;
-        height:300px;
-    }
-
-    .kb-selected{
-        background-color:green;
-        color:white;
-    }
-
-</style>
+<?php echo "<table><tr>" . $root->toHTML() . "</tr></table>"; ?>
 
 </body>
 </html>

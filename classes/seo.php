@@ -15,7 +15,6 @@ class SEO {
     } 
 
     static function addSEOName($nodeID, $seoName){
-        error_log(print_r(self::$seoMap, true));
         self::$seoMap->{$seoName} = $nodeID;
         self::$seoMap->{$nodeID} = $seoName;
         file_put_contents("./seo.map", json_encode(self::$seoMap));
