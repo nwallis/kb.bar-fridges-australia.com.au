@@ -86,7 +86,6 @@ foreach ($nodePaths as $path){
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script src="/js/jquery.elevateZoom-3.0.8.min.js"></script>
     <script src="/js/kb.js"></script>
-    <script>tinymce.init({ selector:'textarea' });</script>
 
     <link rel="stylesheet" href="/css/kb.css">
     <link rel="stylesheet" href="/css/jquery-ui.min.css">
