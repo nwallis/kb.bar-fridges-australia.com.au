@@ -1,3 +1,12 @@
 *.swp
 *.node
 *.children
+{
+    "require": {
+        "smarty/smarty": "^3.1"
+    }
+}
+/cache
+/templates_c
+/vendor
+.DS_Store
