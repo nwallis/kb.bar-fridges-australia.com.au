@@ -5,22 +5,24 @@ $(function() {
         $(this).parent().siblings('.seo-name').val(seoName);
     });
 
-    $(".settings-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        title: "Add new",
-        width: 800
-    });
+
+    $(".clone-dialog").dialog({ autoOpen: false, modal: true, title: "Clone", width: 800 });
+    $(".settings-dialog").dialog({ autoOpen: false, modal: true, title: "Add new", width: 800 });
 
     $(".add-node").click(function() {
-
         var dialog = $(this).attr('for');
         $("#" + dialog).dialog("open");
-
         tinymce.init({
             selector: '#' + dialog + ' textarea'
         });
+    });
 
+    $(".clone-node").click(function(){
+        var dialog = $(this).attr('for');
+        $("#" + dialog).dialog("open");
+        tinymce.init({
+            selector: '#' + dialog + ' textarea'
+        });
     });
 
     $(".fridge-picture").elevateZoom();
@@ -28,7 +30,6 @@ $(function() {
 });
 
 $(document).on('focusin', function(e) {
-    console.log(e);
     if ($(e.target).closest(".mce-window, .moxman-window").length) {
         e.stopImmediatePropagation();
     }

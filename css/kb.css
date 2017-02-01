@@ -53,3 +53,7 @@ table{
 
 .add-node:hover{
 }
+
+.clone-node{
+    cursor:pointer;
+}

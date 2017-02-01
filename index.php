@@ -23,7 +23,6 @@ if (isset($_REQUEST['parent_node'])){
     $nodeFile = "$parentNode/$guid.node";
 
     $fieldsDescriptionPath = "$parentNode/node.fields";
-    $childDescriptionDirectory = "$parentNode$guid.children/";
     $fieldDescriptors = json_decode(file_get_contents($fieldsDescriptionPath));
 
     foreach ($fieldDescriptors->fields as &$descriptor){
@@ -44,9 +43,13 @@ if (isset($_REQUEST['parent_node'])){
 
     //Create child fields
     if (isset($fieldDescriptors->childFields)){
+        $childDescriptionDirectory = "$parentNode$guid.children/";
         mkdir($childDescriptionDirectory, 0777);
         file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
     }
+    
+    //Cloning? Rsync all children from the nodetoClone to the new child directory 
+    if(isset($_REQUEST['clone_node'])) exec ("rsync -a $parentNode".$_REQUEST['clone_node'].".children/ $childDescriptionDirectory"); 
 
     //save seo name
     if (isset($_REQUEST['seo_name'])) SEO::addSEOName($guid, $_REQUEST['seo_name']);        

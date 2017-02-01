@@ -27,7 +27,7 @@ class Node{
     function toHTML(){
 
         $fieldsDescriptionPath = $this->getContentPath() . "node.fields";
-        $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath)) : NULL;
+        $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath), true) : NULL;
 
         $returnHTML = <<<HTML
              
@@ -39,82 +39,36 @@ HTML;
 
             foreach ($this->children as $child){
 
-                $childFileContents = json_decode(file_get_contents($child));
+                $childFileContents = json_decode(file_get_contents($child),true);
                 $childNodeId = basename($child, '.node');
-
                 $childSEOName = SEO::getMapping($childNodeId);
 
-                foreach ($childFileContents as $key => $value){
-                    SmartyWrapper::assign($key, $value);
-                }
-
+                SmartyWrapper::assign('childFields', $childFileContents);
                 SmartyWrapper::assign('nodeLink', $this->getHREF() . $childSEOName);
                 SmartyWrapper::assign('selectedClass', ($this->child && $childNodeId == $this->child->id) ? "kb-selected" : "");
+                SmartyWrapper::assign('dialogID', $childNodeId);
+                SmartyWrapper::assign('dialogType', 'clone');
+                SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
+                SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
 
-                $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors->template);
-
+                $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
+                $returnHTML .= SmartyWrapper::fetch("./templates/dialog.tpl");
+                SmartyWrapper::clearAll();
             }
 
         }else{
-
-                $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
-            $returnHTML .= <<<HTML
-                <div>{$childFileContents->text}</div>
-HTML;
+            $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
+            $returnHTML .= "<div>$childFileContents->text</div>";
         }
 
+
         if ($fieldDescriptors){
-
-            $dialogID = $this->id;
-
-            //Generate form html
-            $returnHTML .= <<<HTML
-
-                <div class="add-node" for="settings-dialog-{$dialogID}">+</div>
-
-                <div class="settings-dialog" id="settings-dialog-{$dialogID}">
-                    <form action="" method = "post" enctype="multipart/form-data">
-HTML;
-
-            foreach ($fieldDescriptors->fields as $descriptor){
-
-                $inputClass = '';
-
-                switch($descriptor->type){
-
-                case "Image":
-                    $returnHTML .= <<<HTML
-                    <label>{$descriptor->name}<input type="file" name="image"></label>
-HTML;
-                    break;
-
-                case "Textarea":
-                    $returnHTML .= <<<HTML
-                        <textarea name="fields[{$descriptor->key_name}]"></textarea>
-HTML;
-                break;
-
-                default:
-                    if (isset($fieldDescriptors->seo_translate_key) && ($fieldDescriptors->seo_translate_key == $descriptor->key_name)){
-                        $inputClass = 'kb-seo-translate';
-                        $returnHTML .= <<<HTML
-                        <input type="hidden" class="seo-name" name="seo_name" value="">
-HTML;
-                    }
-
-                    $returnHTML .= <<<HTML
-                    <label>{$descriptor->name}<input class="{$inputClass}" type="textarea" name="fields[{$descriptor->key_name}]"></label>
-HTML;
-                }
-            }
-
-            $encodedContentPath = htmlspecialchars(base64_encode($this->getContentPath()));
-            $returnHTML .= <<<HTML
-                        <input type="hidden" name="parent_node" value="{$encodedContentPath}">
-                        <input type="submit" value="Save">
-                    </form> 
-                </div>
-HTML;
+            SmartyWrapper::assign('dialogID', $this->id);
+            SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
+            SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
+            SmartyWrapper::assign('dialogType', 'settings');
+            $returnHTML .= SmartyWrapper::fetch("./templates/dialog.tpl");
+            SmartyWrapper::clearAll();
         }
 
         $returnHTML .= "</td>";

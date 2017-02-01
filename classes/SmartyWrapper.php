@@ -19,6 +19,10 @@
             self::$engine->assign($key, $value);
         }
 
+        static function clearAll(){
+            self::$engine->clearAllAssign();
+        }
+
     }
 
 ?>
