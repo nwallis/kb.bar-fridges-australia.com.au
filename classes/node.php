@@ -30,7 +30,6 @@ class Node{
         $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath), true) : NULL;
 
         $returnHTML = <<<HTML
-             
             <td class="kb-section">
 HTML;
 
@@ -47,27 +46,29 @@ HTML;
                 SmartyWrapper::assign('nodeLink', $this->getHREF() . $childSEOName);
                 SmartyWrapper::assign('selectedClass', ($this->child && $childNodeId == $this->child->id) ? "kb-selected" : "");
                 SmartyWrapper::assign('dialogID', $childNodeId);
-                SmartyWrapper::assign('dialogType', 'clone');
                 SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
                 SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
+                SmartyWrapper::assign('deleteContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId)));
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
-                $returnHTML .= SmartyWrapper::fetch("./templates/dialog.tpl");
+                $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
+                $returnHTML .= SmartyWrapper::fetch("./templates/deleteDialog.tpl");
+                $returnHTML .= SmartyWrapper::fetch("./templates/editDialog.tpl");
+
                 SmartyWrapper::clearAll();
             }
 
         }else{
             $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
-            $returnHTML .= "<div>$childFileContents->text</div>";
+            SmartyWrapper::assign('nodeText',$childFileContents->text);
+            $returnHTML .= SmartyWrapper::fetch("./templates/defaultText.tpl");
         }
-
 
         if ($fieldDescriptors){
             SmartyWrapper::assign('dialogID', $this->id);
             SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
             SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
-            SmartyWrapper::assign('dialogType', 'settings');
-            $returnHTML .= SmartyWrapper::fetch("./templates/dialog.tpl");
+            $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
             SmartyWrapper::clearAll();
         }
 
