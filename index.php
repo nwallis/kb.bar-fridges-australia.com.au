@@ -15,7 +15,56 @@ const CONTENT_DIRECTORY = "content";
 SmartyWrapper::init();
 SEO::init();
 
-if (isset($_REQUEST['parent_node'])){
+if (isset($_REQUEST['delete_node'])){
+
+    $deletePath = base64_decode($_REQUEST['delete_node']);
+    $nodeFile = "$deletePath.node";
+    $childDirectory = "$deletePath.children";
+    if (file_exists($nodeFile)) unlink($nodeFile);
+    if (file_exists($childDirectory)) exec("rm -rf $childDirectory");
+
+} else if(isset($_REQUEST['email'])){
+
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $captchaResponse = $_REQUEST['token'];
+    $myvars = "secret=6LeREBQUAAAAAP_saXtJ4JoRDLAG16Hbk68fgXyS&response=$captchaResponse"; 
+    $ch = curl_init( $url );
+    curl_setopt( $ch, CURLOPT_POST, 1);
+    curl_setopt( $ch, CURLOPT_POSTFIELDS, $myvars);
+    curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt( $ch, CURLOPT_HEADER, 0);
+    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $response = json_decode(curl_exec($ch));
+    if ($response->success){
+        try{
+            $mandrill = new Mandrill('NZsXDD12NCoqydzeHph2fg');
+            $message = array(
+                'html' => '<p>Example HTML content</p>',
+                'text' => 'Example text content',
+                'subject' => 'Knowledgebase Enquiry',
+                'from_email' => $_REQUEST['email'],
+                'from_name' => $_REQUEST['first_name'],
+                'to' => array(
+                    array(
+                        'email' => 'vicservice@bar-fridges-australia.com.au',
+                        'name' => 'Service Department',
+                        'type' => 'to'
+                    )
+                ),
+                'headers' => array('Reply-To' => 'natewallis@gmail.com')
+            );
+            $result = $mandrill->messages->send($message);
+        } catch (Mandrill_Error $e){
+        }
+        echo SmartyWrapper::fetch("./templates/enquirySuccess.tpl"); 
+    }else{
+        echo SmartyWrapper::fetch("./templates/enquiryFailure.tpl"); 
+    }
+
+    exit;
+
+}else if (isset($_REQUEST['parent_node'])){
 
     //Generate a new guid for node name
     $guid = SEO::GUID();
@@ -47,7 +96,7 @@ if (isset($_REQUEST['parent_node'])){
         mkdir($childDescriptionDirectory, 0777);
         file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
     }
-    
+
     //Cloning? Rsync all children from the nodetoClone to the new child directory 
     if(isset($_REQUEST['clone_node'])) exec ("rsync -a $parentNode".$_REQUEST['clone_node'].".children/ $childDescriptionDirectory"); 
 
@@ -84,6 +133,8 @@ foreach ($nodePaths as $path){
     <link rel="icon" href="data:;base64,=">
     <title>Bar Fridges Australia Knowledgebase</title>
 
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
