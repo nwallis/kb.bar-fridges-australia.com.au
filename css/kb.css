@@ -54,6 +54,15 @@ table{
 .add-node:hover{
 }
 
-.clone-node{
+.clone-node, .delete-node, .edit-node{
     cursor:pointer;
+}
+
+.clone-dialog img, .edit-dialog img{
+    width:100px;
+    height:auto;
+}
+
+.default-text form label{
+   display:block; 
 }
