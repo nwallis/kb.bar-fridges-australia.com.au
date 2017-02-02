@@ -1,13 +1,49 @@
+var tokenValue;
+
 $(function() {
+
+    $("#enquiry-form").submit(function(e) {
+        e.preventDefault();
+        $.post("/", {
+            "email": "natewallis@gmail.com",
+            "firstname": "Nathan",
+            "phone": "0458770466",
+            "token": tokenValue
+        }, function(result) {
+            console.log(result);
+            $("#enquiry-container").html(result);
+        }, "html");
+    });
 
     $(".kb-seo-translate").keyup(function() {
         var seoName = convertToSEO($(this).val());
         $(this).parent().siblings('.seo-name').val(seoName);
     });
 
-
-    $(".clone-dialog").dialog({ autoOpen: false, modal: true, title: "Clone", width: 800 });
-    $(".settings-dialog").dialog({ autoOpen: false, modal: true, title: "Add new", width: 800 });
+    $(".clone-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        title: "Clone",
+        width: 800
+    });
+    $(".settings-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        title: "Add new",
+        width: 800
+    });
+    $(".delete-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        title: "Delete",
+        width: 800
+    });
+    $(".edit-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        title: "Edit",
+        width: 800
+    });
 
     $(".add-node").click(function() {
         var dialog = $(this).attr('for');
@@ -17,7 +53,23 @@ $(function() {
         });
     });
 
-    $(".clone-node").click(function(){
+    $(".edit-node").click(function() {
+        var dialog = $(this).attr('for');
+        $("#" + dialog).dialog("open");
+        tinymce.init({
+            selector: '#' + dialog + ' textarea'
+        });
+    });
+
+    $(".delete-node").click(function() {
+        var dialog = $(this).attr('for');
+        $("#" + dialog).dialog("open");
+        tinymce.init({
+            selector: '#' + dialog + ' textarea'
+        });
+    });
+
+    $(".clone-node").click(function() {
         var dialog = $(this).attr('for');
         $("#" + dialog).dialog("open");
         tinymce.init({
@@ -46,4 +98,19 @@ function convertToSEO(inputString) {
     encodedUrl = encodedUrl.trim();
     return encodedUrl;
 
+}
+
+function enquirySubmitted(e) {
+    e.preventDefault();
+}
+
+function captchaSubmitted(token) {}
+
+function updateContents() {
+    console.log("here");
+}
+
+function captchaSubmitted(token) {
+    tokenValue = token;
+    $("#enquiry-container input[type='submit']").show();
 }
