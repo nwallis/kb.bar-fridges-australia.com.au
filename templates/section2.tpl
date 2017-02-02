@@ -1,3 +1,7 @@
-<a href="/{$nodeLink}">
-    <div class="{$selectedClass}">{$childFields.title}</div>
-</a>
+<div>
+    <a href="/{$nodeLink}">
+        <span class="{$selectedClass}">{$childFields.title}</span>
+    </a>
+    <span class="delete-node" for="delete-dialog-{$dialogID}"><i class="fa fa-trash-o fa-lg"></i></span>
+    <span class="edit-node" for="edit-dialog-{$dialogID}"><i class="fa fa-pencil-square-o fa-lg"></i></span>
+</div>
