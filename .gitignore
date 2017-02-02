@@ -8,3 +8,4 @@
 /images/*.jpg
 .htaccess
 seo.map
+*.swo
