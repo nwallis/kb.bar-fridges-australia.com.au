@@ -23,59 +23,21 @@ $(function() {
         generateSEO($(this));
     });
 
-    $(".clone-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        title: "Clone",
-        width: 800
-    });
-    $(".settings-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        title: "Add new",
-        width: 800
-    });
-    $(".delete-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        title: "Delete",
-        width: 800
-    });
-    $(".edit-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        title: "Edit",
-        width: 800
-    });
+    initDialog(".clone-dialog", "Clone");
+    initDialog(".settings-dialog", "Add new");
+    initDialog(".delete-dialog", "Delete");
+    initDialog(".edit-dialog", "Edit");
 
-    $(".add-node").click(function() {
-        initTinyMCE(this);
-    });
-
-    $(".edit-node").click(function() {
-        initTinyMCE(this);
-    });
-
-    $(".delete-node").click(function() {
-        initTinyMCE(this);
-    });
-
-    $(".clone-node").click(function() {
-        initTinyMCE(this);
-    });
+    $(".add-node").click(function() { initTinyMCE(this); });
+    $(".edit-node").click(function() { initTinyMCE(this); });
+    $(".delete-node").click(function() { initTinyMCE(this); });
+    $(".clone-node").click(function() { initTinyMCE(this); });
 
     $(".fridge-picture").elevateZoom();
 
 });
 
-$(document).on('focusin', function(e) {
-    if ($(e.target).closest(".mce-window, .moxman-window").length) {
-        e.stopImmediatePropagation();
-    }
-});
-
 function convertToSEO(inputString) {
-
     var encodedUrl = inputString.toString().toLowerCase();
     encodedUrl = encodedUrl.trim();
     encodedUrl = encodedUrl.replace(/\?/, "");
@@ -84,17 +46,10 @@ function convertToSEO(inputString) {
     encodedUrl = encodedUrl.split(/-+/).join("-");
     encodedUrl = encodedUrl.trim();
     return encodedUrl;
-
 }
 
 function enquirySubmitted(e) {
     e.preventDefault();
-}
-
-function captchaSubmitted(token) {}
-
-function updateContents() {
-    console.log("here");
 }
 
 function captchaSubmitted(token) {
@@ -122,6 +77,7 @@ function initTinyMCE(trigger) {
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
         file_browser_callback: function(field_name, url, type, win) {
             openPopup();
+
             function openPopup() {
                 var left = (screen.width - 950) / 2;
                 var top = (screen.height - 450) / 2;
@@ -135,9 +91,17 @@ function initTinyMCE(trigger) {
         ],
         height: 400,
         images_upload_url: 'postAcceptor.php',
-        init_instance_callback : function(){
+        init_instance_callback: function() {
             tinymce.activeEditor.setContent(targetDialog.find("input[name=wysiwygHTML]").first().val());
-        } 
+        }
     });
 }
 
+function initDialog(class, title) {
+    $(class).dialog({
+        autoOpen: false,
+        modal: true,
+        title: title,
+        width: 800
+    })
+}
