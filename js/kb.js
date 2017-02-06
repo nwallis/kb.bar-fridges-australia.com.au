@@ -10,14 +10,18 @@ $(function() {
             "phone": "0458770466",
             "token": tokenValue
         }, function(result) {
-            console.log(result);
             $("#enquiry-container").html(result);
         }, "html");
     });
 
+    $(".clone-dialog form").submit(function(e){
+        e.preventDefault();
+        generateSEO($(this).find('.kb-seo-translate'));
+        $(this).submit();
+    });
+
     $(".kb-seo-translate").keyup(function() {
-        var seoName = convertToSEO($(this).val());
-        $(this).parent().siblings('.seo-name').val(seoName);
+        generateSEO($(this));
     });
 
     $(".clone-dialog").dialog({
@@ -113,4 +117,8 @@ function updateContents() {
 function captchaSubmitted(token) {
     tokenValue = token;
     $("#enquiry-container input[type='submit']").show();
+}
+
+function generateSEO(element){
+    element.parent().siblings('.seo-name').val( convertToSEO(element.val()) );
 }

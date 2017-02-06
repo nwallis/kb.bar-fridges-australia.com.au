@@ -23,6 +23,8 @@ if (isset($_REQUEST['delete_node'])){
     if (file_exists($nodeFile)) unlink($nodeFile);
     if (file_exists($childDirectory)) exec("rm -rf $childDirectory");
 
+} else if(isset($_REQUEST['edit_node'])){
+
 } else if(isset($_REQUEST['email'])){
 
     $url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -107,6 +109,7 @@ if (isset($_REQUEST['delete_node'])){
 
 //Server URI needs some massaging
 $trimmedServerURI = ltrim($_SERVER['REQUEST_URI'],'/');
+$trimmedServerURI = trim($trimmedServerURI,'/');
 $explodedPaths = explode('/', $trimmedServerURI);
 $nodePaths = strlen($trimmedServerURI) == 0 ? [CONTENT_DIRECTORY] : array_merge([CONTENT_DIRECTORY],$explodedPaths);
 

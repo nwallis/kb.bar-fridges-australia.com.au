@@ -15,6 +15,14 @@ class SEO {
     } 
 
     static function addSEOName($nodeID, $seoName){
+
+        $duplicateCount=0;
+        $originalSEOName = $seoName;
+        while (key_exists($seoName, self::$seoMap)){
+            $duplicateCount++;
+            $seoName = $originalSEOName . "-" . $duplicateCount;
+        }
+
         self::$seoMap->{$seoName} = $nodeID;
         self::$seoMap->{$nodeID} = $seoName;
         file_put_contents("./seo.map", json_encode(self::$seoMap));
@@ -22,10 +30,7 @@ class SEO {
 
     static function GUID()
     {
-        if (function_exists('com_create_guid') === true)
-        {
-            return trim(com_create_guid(), '{}');
-        }
+        if (function_exists('com_create_guid') === true) return trim(com_create_guid(), '{}');
 
         return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }

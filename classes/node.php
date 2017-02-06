@@ -37,7 +37,6 @@ HTML;
             $this->children = glob($this->getContentPath() . "*.node");
 
             foreach ($this->children as $child){
-
                 $childFileContents = json_decode(file_get_contents($child),true);
                 $childNodeId = basename($child, '.node');
                 $childSEOName = SEO::getMapping($childNodeId);
@@ -49,6 +48,8 @@ HTML;
                 SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
                 SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
                 SmartyWrapper::assign('deleteContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId)));
+                SmartyWrapper::assign('editContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId . ".node")));
+                SmartyWrapper::assign('parentHREF', "/" . $this->getHREF());
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
                 $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
@@ -67,6 +68,7 @@ HTML;
         if ($fieldDescriptors){
             SmartyWrapper::assign('dialogID', $this->id);
             SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
+            SmartyWrapper::assign('childFields', $fieldDescriptors);
             SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
             $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
             SmartyWrapper::clearAll();
