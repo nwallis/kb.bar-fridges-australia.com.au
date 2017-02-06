@@ -1,5 +1,4 @@
 var tokenValue;
-var wysiwygHTML;
 
 $(function() {
 
@@ -86,7 +85,6 @@ function initTinyMCE(trigger) {
         },
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         content_css: [
-            '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
             '//www.tinymce.com/css/codepen.min.css'
         ],
         height: 400,
@@ -97,8 +95,8 @@ function initTinyMCE(trigger) {
     });
 }
 
-function initDialog(class, title) {
-    $(class).dialog({
+function initDialog(dialogClass, title) {
+    $(dialogClass).dialog({
         autoOpen: false,
         modal: true,
         title: title,
