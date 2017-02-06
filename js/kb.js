@@ -1,4 +1,5 @@
 var tokenValue;
+var wysiwygHTML;
 
 $(function() {
 
@@ -105,11 +106,14 @@ function generateSEO(element) {
     element.parent().siblings('.seo-name').val(convertToSEO(element.val()));
 }
 
-function initTinyMCE(dialog) {
-    var dialog = $(dialog).attr('for');
-    $("#" + dialog).dialog("open");
+function initTinyMCE(trigger) {
+
+    var targetDialogID = $(trigger).attr('for');
+    var targetDialog = $("#" + targetDialogID);
+    targetDialog.dialog("open");
+
     tinymce.init({
-        selector: '#' + dialog + ' textarea',
+        selector: '#' + targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
@@ -131,5 +135,9 @@ function initTinyMCE(dialog) {
         ],
         height: 400,
         images_upload_url: 'postAcceptor.php',
+        init_instance_callback : function(){
+            tinymce.activeEditor.setContent(targetDialog.find("input[name=wysiwygHTML]").first().val());
+        } 
     });
 }
+
