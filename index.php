@@ -23,7 +23,22 @@ if (isset($_REQUEST['delete_node'])){
     if (file_exists($nodeFile)) unlink($nodeFile);
     if (file_exists($childDirectory)) exec("rm -rf $childDirectory");
 
-} else if(isset($_REQUEST['edit_node'])){
+} else if(isset($_REQUEST['edit_node_guid'])){
+
+    $guid = $_REQUEST['edit_node_guid'];
+    $parentNode = base64_decode($_REQUEST['parent_node']);
+    $nodeFile = "$parentNode/$guid.node";
+    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.fields"));
+    $originalJSON = json_decode(file_get_contents("$parentNode/$guid.node"), true);
+
+    file_put_contents($nodeFile, Node::updateJSON($originalJSON, $fieldDescriptors));
+
+    if (isset($fieldDescriptors->childFields)){
+        $childDescriptionDirectory = "$parentNode$guid.children/";
+        file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
+    }
+
+    SEO::updateSEOName($guid, $_REQUEST['seo_name']);        
 
 } else if(isset($_REQUEST['email'])){
 
@@ -73,24 +88,10 @@ if (isset($_REQUEST['delete_node'])){
     $parentNode = base64_decode($_REQUEST['parent_node']);
     $nodeFile = "$parentNode/$guid.node";
 
-    $fieldsDescriptionPath = "$parentNode/node.fields";
-    $fieldDescriptors = json_decode(file_get_contents($fieldsDescriptionPath));
+    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.fields"));
 
-    foreach ($fieldDescriptors->fields as &$descriptor){
-        switch ($descriptor->type){
-        case "Image":
-            $savePath = "./images/" . SEO::GUID() . ".jpg";
-            move_uploaded_file($_FILES['image']['tmp_name'], $savePath);
-            $_REQUEST['fields'][$descriptor->key_name] = $savePath;
-            break;
-        }  
-    }
-
-    //Build JSON to save in new node
-    $newNodeJSON = json_encode($_REQUEST['fields']);
-
-    //Save the node under the parent node
-    file_put_contents($nodeFile, $newNodeJSON);
+    //Save the node data under the parent node
+    file_put_contents($nodeFile, Node::generateJSON($fieldDescriptors));
 
     //Create child fields
     if (isset($fieldDescriptors->childFields)){

@@ -14,10 +14,8 @@ $(function() {
         }, "html");
     });
 
-    $(".clone-dialog form").submit(function(e){
-        e.preventDefault();
+    $(".clone-dialog form").submit(function(e) {
         generateSEO($(this).find('.kb-seo-translate'));
-        $(this).submit();
     });
 
     $(".kb-seo-translate").keyup(function() {
@@ -50,35 +48,19 @@ $(function() {
     });
 
     $(".add-node").click(function() {
-        var dialog = $(this).attr('for');
-        $("#" + dialog).dialog("open");
-        tinymce.init({
-            selector: '#' + dialog + ' textarea'
-        });
+        initTinyMCE(this);
     });
 
     $(".edit-node").click(function() {
-        var dialog = $(this).attr('for');
-        $("#" + dialog).dialog("open");
-        tinymce.init({
-            selector: '#' + dialog + ' textarea'
-        });
+        initTinyMCE(this);
     });
 
     $(".delete-node").click(function() {
-        var dialog = $(this).attr('for');
-        $("#" + dialog).dialog("open");
-        tinymce.init({
-            selector: '#' + dialog + ' textarea'
-        });
+        initTinyMCE(this);
     });
 
     $(".clone-node").click(function() {
-        var dialog = $(this).attr('for');
-        $("#" + dialog).dialog("open");
-        tinymce.init({
-            selector: '#' + dialog + ' textarea'
-        });
+        initTinyMCE(this);
     });
 
     $(".fridge-picture").elevateZoom();
@@ -119,6 +101,35 @@ function captchaSubmitted(token) {
     $("#enquiry-container input[type='submit']").show();
 }
 
-function generateSEO(element){
-    element.parent().siblings('.seo-name').val( convertToSEO(element.val()) );
+function generateSEO(element) {
+    element.parent().siblings('.seo-name').val(convertToSEO(element.val()));
+}
+
+function initTinyMCE(dialog) {
+    var dialog = $(dialog).attr('for');
+    $("#" + dialog).dialog("open");
+    tinymce.init({
+        selector: '#' + dialog + ' textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste imagetools"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+        file_browser_callback: function(field_name, url, type, win) {
+            openPopup();
+            function openPopup() {
+                var left = (screen.width - 950) / 2;
+                var top = (screen.height - 450) / 2;
+                return window.open('/yonetim/grafik', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=950, height=450, top=' + top + ', left=' + left);
+            }
+        },
+        imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+        content_css: [
+            '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+            '//www.tinymce.com/css/codepen.min.css'
+        ],
+        height: 400,
+        images_upload_url: 'postAcceptor.php',
+    });
 }

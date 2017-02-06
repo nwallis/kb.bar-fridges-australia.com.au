@@ -48,7 +48,6 @@ HTML;
                 SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
                 SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
                 SmartyWrapper::assign('deleteContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId)));
-                SmartyWrapper::assign('editContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId . ".node")));
                 SmartyWrapper::assign('parentHREF', "/" . $this->getHREF());
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
@@ -94,6 +93,35 @@ HTML;
 
     function assignChild($child){
         $this->child = $child;
+    }
+
+    static function prepJSON($fieldDescriptors){
+        foreach ($fieldDescriptors->fields as &$descriptor){
+            switch ($descriptor->type){
+            case "Image":
+                if (!empty($_FILES['image']['name'])){
+                    $savePath = "./images/" . SEO::GUID() . ".jpg";
+                    move_uploaded_file($_FILES['image']['tmp_name'], $savePath);
+                    $_REQUEST['fields'][$descriptor->key_name] = $savePath;
+                }
+                break;
+            }  
+        }
+    }
+
+    static function updateJSON($originalJSON, $fieldDescriptors){
+        self::prepJSON($fieldDescriptors);
+        $originalJSON = array_merge($originalJSON, $_REQUEST['fields']); 
+        return json_encode($originalJSON);
+    }
+
+    static function generateJSON($fieldDescriptors){
+        self::prepJSON($fieldDescriptors);
+        return json_encode($_REQUEST['fields']);
+    } 
+
+    static function updateNode($nodeFile){
+
     }
 
 }
