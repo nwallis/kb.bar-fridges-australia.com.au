@@ -14,6 +14,10 @@ $(function() {
         }, "html");
     });
 
+    $(".edit-dialog form").submit(function(e) {
+        generateSEO($(this).find('.kb-seo-translate'));
+    });
+
     $(".clone-dialog form").submit(function(e) {
         generateSEO($(this).find('.kb-seo-translate'));
     });
@@ -71,12 +75,12 @@ function initTinyMCE(trigger) {
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste imagetools"
+            "insertdatetime media table contextmenu paste imagetools imageuploader"
         ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image imageuploader",
+        ttolbar_items_size: 'small',
         file_browser_callback: function(field_name, url, type, win) {
             openPopup();
-
             function openPopup() {
                 var left = (screen.width - 950) / 2;
                 var top = (screen.height - 450) / 2;
@@ -93,6 +97,7 @@ function initTinyMCE(trigger) {
             tinymce.activeEditor.setContent(targetDialog.find("input[name=wysiwygHTML]").first().val());
         }
     });
+
 }
 
 function initDialog(dialogClass, title) {
