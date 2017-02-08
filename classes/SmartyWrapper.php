@@ -8,6 +8,7 @@
 
         static function init(){
             self::$engine = new \Smarty;
+            self::$engine->registerPlugin("modifier",'base64_encode',  'base64_encode');
             self::$engine->caching = false;
         }
 

@@ -31,10 +31,18 @@ $(function() {
     initDialog(".delete-dialog", "Delete");
     initDialog(".edit-dialog", "Edit");
 
-    $(".add-node").click(function() { initTinyMCE(this); });
-    $(".edit-node").click(function() { initTinyMCE(this); });
-    $(".delete-node").click(function() { initTinyMCE(this); });
-    $(".clone-node").click(function() { initTinyMCE(this); });
+    $(".add-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".edit-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".delete-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".clone-node").click(function() {
+        initTinyMCE(this);
+    });
 
     $(".fridge-picture").elevateZoom();
 
@@ -71,6 +79,8 @@ function initTinyMCE(trigger) {
     targetDialog.dialog("open");
 
     tinymce.init({
+        theme_advanced_resizing: true,
+        theme_advanced_resize_horizontal: false,
         selector: '#' + targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
@@ -79,22 +89,13 @@ function initTinyMCE(trigger) {
         ],
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
         ttolbar_items_size: 'small',
-        file_browser_callback: function(field_name, url, type, win) {
-            openPopup();
-            function openPopup() {
-                var left = (screen.width - 950) / 2;
-                var top = (screen.height - 450) / 2;
-                return window.open('/yonetim/grafik', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=950, height=450, top=' + top + ', left=' + left);
-            }
-        },
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         content_css: [
             '//www.tinymce.com/css/codepen.min.css'
         ],
-        height: 400,
-        images_upload_url: 'postAcceptor.php',
+        height: 200,
         init_instance_callback: function() {
-            tinymce.activeEditor.setContent(targetDialog.find("input[name=wysiwygHTML]").first().val());
+            tinymce.activeEditor.setContent(atob(targetDialog.find("input[name=wysiwygHTML]").first().val()));
         }
     });
 

@@ -7,7 +7,7 @@
         {elseif $descriptor.type == "Textarea"} 
             <label>{$descriptor.name}</label>
             <textarea name="fields[{$descriptor.key_name}]"></textarea>
-            <input type="hidden" name="wysiwygHTML" value="{if isset($childFields.{$descriptor.key_name}) }{$childFields.{$descriptor.key_name}}{/if}">
+            <input type="hidden" name="wysiwygHTML" value="{if isset($childFields.{$descriptor.key_name}) }{$childFields.{$descriptor.key_name}|base64_encode}{/if}">
         {else}
             {if isset($fieldDescriptors.seo_translate_key) and ($fieldDescriptors.seo_translate_key == $descriptor.key_name)}
                 {assign "inputClass" "kb-seo-translate"}
