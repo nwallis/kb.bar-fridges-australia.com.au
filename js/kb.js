@@ -88,7 +88,7 @@ function initTinyMCE(trigger) {
             "searchreplace visualblocks code fullscreen",
             "insertdatetime media table contextmenu paste imagetools jbimages"
         ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link jbimages",
         ttolbar_items_size: 'small',
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         content_css: [
