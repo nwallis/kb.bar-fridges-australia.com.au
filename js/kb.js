@@ -75,9 +75,9 @@ function initTinyMCE(trigger) {
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste imagetools imageuploader"
+            "insertdatetime media table contextmenu paste imagetools jbimages"
         ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image imageuploader",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
         ttolbar_items_size: 'small',
         file_browser_callback: function(field_name, url, type, win) {
             openPopup();
