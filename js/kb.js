@@ -81,6 +81,7 @@ function initTinyMCE(trigger) {
     tinymce.init({
         theme_advanced_resizing: true,
         theme_advanced_resize_horizontal: false,
+        relative_urls : false,
         selector: '#' + targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
