@@ -22,6 +22,7 @@ if (isset($_REQUEST['delete_node'])){
     $childDirectory = "$deletePath.children";
     if (file_exists($nodeFile)) unlink($nodeFile);
     if (file_exists($childDirectory)) exec("rm -rf $childDirectory");
+    SEO::deleteSEOName(basename($nodeFile, '.node'));
 
 } else if(isset($_REQUEST['edit_node_guid'])){
 
