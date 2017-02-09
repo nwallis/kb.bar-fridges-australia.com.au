@@ -128,32 +128,43 @@ foreach ($nodePaths as $path){
     $root = $childNode;
 }
 
+$bodyHTML = "<table><tr>" . $root->toHTML() . "</tr></table>";
+
+if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    echo $bodyHTML;
+}else{
+    $html = <<<HTML
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="data:;base64,=">
+        <title>Bar Fridges Australia Knowledgebase</title>
+
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="/js/jquery-ui.min.js"></script>
+        <script src="/js/tinymce/tinymce.min.js"></script>
+        <script src="/js/jquery.elevateZoom-3.0.8.min.js"></script>
+        <script src="/js/kb.js"></script>
+
+        <link rel="stylesheet" href="/css/kb.css">
+        <link rel="stylesheet" href="/css/jquery-ui.min.css">
+
+    </head>
+    <body>
+
+    {$bodyHTML}
+
+    </body>
+    </html>
+
+HTML;
+
+    echo $html;
+}
+
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="data:;base64,=">
-    <title>Bar Fridges Australia Knowledgebase</title>
-
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
-    <script src="/js/tinymce/tinymce.min.js"></script>
-    <script src="/js/jquery.elevateZoom-3.0.8.min.js"></script>
-    <script src="/js/kb.js"></script>
-
-    <link rel="stylesheet" href="/css/kb.css">
-    <link rel="stylesheet" href="/css/jquery-ui.min.css">
-
-</head>
-<body>
-
-<?php echo "<table><tr>" . $root->toHTML() . "</tr></table>"; ?>
-
-</body>
-</html>
-
 
