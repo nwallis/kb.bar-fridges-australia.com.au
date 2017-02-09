@@ -1,7 +1,10 @@
 var tokenValue;
 
 $(function() {
+    initElements();
+});
 
+function initElements() {
     $("#enquiry-form").submit(function(e) {
         e.preventDefault();
         $.post("/", {
@@ -14,12 +17,40 @@ $(function() {
         }, "html");
     });
 
-    $(".edit-dialog form").submit(function(e) {
+    $(".settings-dialog form, .edit-dialog form, .clone-dialog form").submit(function(e) {
         generateSEO($(this).find('.kb-seo-translate'));
+        tinyMCE.triggerSave();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            dataType: 'html',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $("body").html(data);
+                initElements();
+            },
+            error: function(xhr, err) {}
+        });
+        return false;
     });
 
-    $(".clone-dialog form").submit(function(e) {
-        generateSEO($(this).find('.kb-seo-translate'));
+    $(".delete-dialog form").submit(function(e) {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            dataType: 'html',
+            data: $(this).serialize(),
+            success: function(data) {
+                $("body").html(data);
+                initElements();
+            },
+            error: function(xhr, err) {}
+        });
+        return false;
     });
 
     $(".kb-seo-translate").keyup(function() {
@@ -45,8 +76,7 @@ $(function() {
     });
 
     $(".fridge-picture").elevateZoom();
-
-});
+}
 
 function convertToSEO(inputString) {
     var encodedUrl = inputString.toString().toLowerCase();
@@ -81,7 +111,7 @@ function initTinyMCE(trigger) {
     tinymce.init({
         theme_advanced_resizing: true,
         theme_advanced_resize_horizontal: false,
-        relative_urls : false,
+        relative_urls: false,
         selector: '#' + targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
