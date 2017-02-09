@@ -14,6 +14,19 @@ class SEO {
         return isset(self::$seoMap->{$mapID}) ? self::$seoMap->{$mapID} : "";
     } 
 
+    static function deleteSEOName($nodeID){
+        try{
+            unset(self::$seoMap->{self::$seoMap->{$nodeID}});
+            unset(self::$seoMap->{$nodeID});
+            self::updateMap();
+        } catch (Exception $e) {
+        }
+    }
+
+    static function updateMap(){
+        file_put_contents("./seo.map", json_encode(self::$seoMap));
+    }
+
     static function addSEOName($nodeID, $seoName){
         $duplicateCount=0;
         $originalSEOName = $seoName;
@@ -24,7 +37,7 @@ class SEO {
 
         self::$seoMap->{$seoName} = $nodeID;
         self::$seoMap->{$nodeID} = $seoName;
-        file_put_contents("./seo.map", json_encode(self::$seoMap));
+        self::updateMap();
     }
 
     static function updateSEOName($nodeID, $seoName){
