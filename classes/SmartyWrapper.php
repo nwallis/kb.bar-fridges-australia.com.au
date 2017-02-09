@@ -16,6 +16,10 @@
             return self::$engine->fetch($templateFile);
         }
 
+        static function display($templateFile){
+            return self::$engine->display($templateFile);
+        }
+
         static function assign($key, $value){
             self::$engine->assign($key, $value);
         }

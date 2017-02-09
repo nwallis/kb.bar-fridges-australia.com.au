@@ -59,9 +59,15 @@ HTML;
             }
 
         }else{
-            $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
-            SmartyWrapper::assign('nodeText',$childFileContents->text);
-            $returnHTML .= SmartyWrapper::fetch("./templates/defaultText.tpl");
+            if (file_exists($this->parent->getContentPath() . "$this->id.node")){
+                $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
+                SmartyWrapper::assign('nodeText',$childFileContents->text);
+                $returnHTML .= SmartyWrapper::fetch("./templates/defaultText.tpl");
+            }else{
+                header("HTTP/1.0 404 Not Found");
+                SmartyWrapper::display("./templates/404.tpl");
+                die();
+            }
         }
 
         if ($fieldDescriptors){
