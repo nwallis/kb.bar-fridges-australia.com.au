@@ -39,6 +39,7 @@ function initElements() {
     });
 
     $(".delete-dialog form").submit(function(e) {
+        var parentHREF = $(this).attr('action');
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
@@ -47,6 +48,7 @@ function initElements() {
             success: function(data) {
                 $("body").html(data);
                 initElements();
+                window.location.href = parentHREF;
             },
             error: function(xhr, err) {}
         });
