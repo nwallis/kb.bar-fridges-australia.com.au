@@ -1,6 +1,4 @@
-{if $adminAccess}
-    <div class="add-node" for="settings-dialog-{$dialogID}">+</div>
-{/if}
+<div class="add-node" for="settings-dialog-{$dialogID}">+</div>
 
 <div class="settings-dialog" id="settings-dialog-{$dialogID}">
     <form action="" method = "post" enctype="multipart/form-data">
