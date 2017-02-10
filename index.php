@@ -5,8 +5,6 @@ include_once('./classes/SEO.php');
 include_once('./classes/SmartyWrapper.php');
 
 $loader = require 'vendor/autoload.php';
-$ipList = ['149.135.111.80'];
-$isAdmin = in_array($ipList, $_SERVER['REMOTE_ADDR']);
 
 use Knowledgebase\Node;
 use Knowledgebase\SEO;

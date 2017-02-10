@@ -49,7 +49,7 @@ HTML;
                 SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
                 SmartyWrapper::assign('deleteContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId)));
                 SmartyWrapper::assign('parentHREF', "/" . $this->getHREF());
-                SmartyWrapper::assign('isAdmin', $isAdmin);
+                SmartyWrapper::assign('adminAccess', SmartyWrapper::adminAccess());
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
                 $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
@@ -76,6 +76,8 @@ HTML;
             SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
             SmartyWrapper::assign('childFields', $fieldDescriptors);
             SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
+            SmartyWrapper::assign('adminAccess', SmartyWrapper::adminAccess());
+
             $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
             SmartyWrapper::clearAll();
         }
@@ -87,44 +89,44 @@ HTML;
     }
 
     function getParent(){
-        return $parent;
+      return $parent;
     }
 
     function getChild(){
-        return $child;
+      return $child;
     }
 
     function assignParent($parent){
-        $this->parent = $parent;
+      $this->parent = $parent;
     }
 
     function assignChild($child){
-        $this->child = $child;
+      $this->child = $child;
     }
 
     static function prepJSON($fieldDescriptors){
-        foreach ($fieldDescriptors->fields as &$descriptor){
-            switch ($descriptor->type){
-            case "Image":
-                if (!empty($_FILES['image']['name'])){
-                    $savePath = "./images/" . SEO::GUID() . ".jpg";
-                    move_uploaded_file($_FILES['image']['tmp_name'], $savePath);
-                    $_REQUEST['fields'][$descriptor->key_name] = $savePath;
-                }
-                break;
-            }  
-        }
+      foreach ($fieldDescriptors->fields as &$descriptor){
+        switch ($descriptor->type){
+        case "Image":
+          if (!empty($_FILES['image']['name'])){
+            $savePath = "./images/" . SEO::GUID() . ".jpg";
+            move_uploaded_file($_FILES['image']['tmp_name'], $savePath);
+            $_REQUEST['fields'][$descriptor->key_name] = $savePath;
+          }
+          break;
+        }  
+      }
     }
 
     static function updateJSON($originalJSON, $fieldDescriptors){
-        self::prepJSON($fieldDescriptors);
-        $originalJSON = array_merge($originalJSON, $_REQUEST['fields']); 
-        return json_encode($originalJSON);
+      self::prepJSON($fieldDescriptors);
+      $originalJSON = array_merge($originalJSON, $_REQUEST['fields']); 
+      return json_encode($originalJSON);
     }
 
     static function generateJSON($fieldDescriptors){
-        self::prepJSON($fieldDescriptors);
-        return json_encode($_REQUEST['fields']);
+      self::prepJSON($fieldDescriptors);
+      return json_encode($_REQUEST['fields']);
     } 
 
     static function updateNode($nodeFile){
