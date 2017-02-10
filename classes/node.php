@@ -49,6 +49,7 @@ HTML;
                 SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
                 SmartyWrapper::assign('deleteContentPath', htmlspecialchars(base64_encode($this->getContentPath().$childNodeId)));
                 SmartyWrapper::assign('parentHREF', "/" . $this->getHREF());
+                SmartyWrapper::assign('isAdmin', $isAdmin);
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
                 $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
