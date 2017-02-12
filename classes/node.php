@@ -36,12 +36,19 @@ HTML;
         if ( file_exists($this->getContentPath()) || !isset($this->parent) ){
             $this->children = glob($this->getContentPath() . "*.node");
 
+            $contents = [];            
+
             foreach ($this->children as $child){
-                $childFileContents = json_decode(file_get_contents($child),true);
+                $contents[] = json_decode(file_get_contents($child),true);
+            }
+
+            array_multisort($contents);
+
+            foreach ($contents as $child){
                 $childNodeId = basename($child, '.node');
                 $childSEOName = SEO::getMapping($childNodeId);
 
-                SmartyWrapper::assign('childFields', $childFileContents);
+                SmartyWrapper::assign('childFields', $child);
                 SmartyWrapper::assign('nodeLink', $this->getHREF() . $childSEOName);
                 SmartyWrapper::assign('selectedClass', ($this->child && $childNodeId == $this->child->id) ? "kb-selected" : "");
                 SmartyWrapper::assign('dialogID', $childNodeId);

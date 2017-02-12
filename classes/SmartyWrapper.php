@@ -29,8 +29,8 @@
         }
 
         static function adminAccess(){
-          $ipList = ['60.230.186.248','149.135.111.80'];
-          return in_array($_SERVER['REMOTE_ADDR'],$ipList) && !isset($_REQUEST['preview']);
+            $ipList = ['60.230.186.248','149.135.111.80','::1'];
+            return in_array($_SERVER['REMOTE_ADDR'],$ipList) && !isset($_REQUEST['preview']);
         }
 
     }
