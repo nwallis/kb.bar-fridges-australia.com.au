@@ -39,13 +39,13 @@ HTML;
             $contents = [];            
 
             foreach ($this->children as $child){
-                $contents[] = json_decode(file_get_contents($child),true);
+                $contents[$child] = json_decode(file_get_contents($child),true);
             }
 
             array_multisort($contents);
 
-            foreach ($contents as $child){
-                $childNodeId = basename($child, '.node');
+            foreach ($contents as $childPath => $child){
+                $childNodeId = basename($childPath, '.node');
                 $childSEOName = SEO::getMapping($childNodeId);
 
                 SmartyWrapper::assign('childFields', $child);
