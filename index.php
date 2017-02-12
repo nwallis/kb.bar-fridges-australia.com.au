@@ -43,6 +43,8 @@ if (isset($_REQUEST['delete_node'])){
 
 } else if(isset($_REQUEST['email'])){
 
+    $config = parse_ini_file("config.ini", true);
+
     $url = 'https://www.google.com/recaptcha/api/siteverify';
     $captchaResponse = $_REQUEST['token'];
     $myvars = "secret=6LeREBQUAAAAAP_saXtJ4JoRDLAG16Hbk68fgXyS&response=$captchaResponse"; 
@@ -58,14 +60,14 @@ if (isset($_REQUEST['delete_node'])){
         try{
             $mandrill = new Mandrill('NZsXDD12NCoqydzeHph2fg');
             $message = array(
-                'html' => '<p>Example HTML content</p>',
-                'text' => 'Example text content',
+                'html' => $_REQUEST['message'],
+                'text' => $_REQUEST['message'],
                 'subject' => 'Knowledgebase Enquiry',
                 'from_email' => $_REQUEST['email'],
                 'from_name' => $_REQUEST['first_name'],
                 'to' => array(
                     array(
-                        'email' => 'vicservice@bar-fridges-australia.com.au',
+                        'email' => $config['email']['serviceEmail'],
                         'name' => 'Service Department',
                         'type' => 'to'
                     )

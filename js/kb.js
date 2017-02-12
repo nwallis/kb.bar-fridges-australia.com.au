@@ -6,15 +6,12 @@ $(function() {
 
 function initElements() {
     $("#enquiry-form").submit(function(e) {
-        e.preventDefault();
-        $.post("/", {
-            "email": "natewallis@gmail.com",
-            "firstname": "Nathan",
-            "phone": "0458770466",
-            "token": tokenValue
-        }, function(result) {
+        var data = $(this).serialize();
+        data += "&token=" + tokenValue;
+        $.post("/", data, function(result) {
             $("#enquiry-container").html(result);
         }, "html");
+        return false;
     });
 
     $(".settings-dialog form, .edit-dialog form, .clone-dialog form").submit(function(e) {
