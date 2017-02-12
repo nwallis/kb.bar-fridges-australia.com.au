@@ -59,34 +59,39 @@ HTML;
                 SmartyWrapper::assign('adminAccess', SmartyWrapper::adminAccess());
 
                 $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
-                $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
-                $returnHTML .= SmartyWrapper::fetch("./templates/deleteDialog.tpl");
-                $returnHTML .= SmartyWrapper::fetch("./templates/editDialog.tpl");
+
+                if (SmartyWrapper::adminAccess()){ 
+                  $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
+                  $returnHTML .= SmartyWrapper::fetch("./templates/deleteDialog.tpl");
+                  $returnHTML .= SmartyWrapper::fetch("./templates/editDialog.tpl");
+                }
 
                 SmartyWrapper::clearAll();
             }
 
         }else{
-            if (file_exists($this->parent->getContentPath() . "$this->id.node")){
-                $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
-                SmartyWrapper::assign('nodeText',$childFileContents->text);
-                $returnHTML .= SmartyWrapper::fetch("./templates/defaultText.tpl");
-            }else{
-                header("HTTP/1.0 404 Not Found");
-                SmartyWrapper::display("./templates/404.tpl");
-                die();
-            }
+          if (file_exists($this->parent->getContentPath() . "$this->id.node")){
+            $childFileContents = json_decode(file_get_contents($this->parent->getContentPath() . "$this->id.node"));
+            SmartyWrapper::assign('nodeText',$childFileContents->text);
+            $returnHTML .= SmartyWrapper::fetch("./templates/defaultText.tpl");
+          }else{
+            header("HTTP/1.0 404 Not Found");
+            SmartyWrapper::display("./templates/404.tpl");
+            die();
+          }
         }
 
         if ($fieldDescriptors){
-            SmartyWrapper::assign('dialogID', $this->id);
-            SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
-            SmartyWrapper::assign('childFields', $fieldDescriptors);
-            SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
-            SmartyWrapper::assign('adminAccess', SmartyWrapper::adminAccess());
+          SmartyWrapper::assign('dialogID', $this->id);
+          SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
+          SmartyWrapper::assign('childFields', $fieldDescriptors);
+          SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
 
+          if (SmartyWrapper::adminAccess()){ 
             $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
-            SmartyWrapper::clearAll();
+          }
+
+          SmartyWrapper::clearAll();
         }
 
         $returnHTML .= "</td>";
