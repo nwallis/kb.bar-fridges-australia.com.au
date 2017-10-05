@@ -31,7 +31,7 @@
         </div>
         <div class="g-recaptcha" data-sitekey="6LeREBQUAAAAABj5Bj1RmM2PAIkVLD1UWA2f6TNN" data-callback="captchaSubmitted"></div>
         <div class="form-group row">
-          <button type="submit" class="btn btn-primary" style="display:none;">Send message</button>
+          <button id="submit-enquiry-button" class="btn btn-primary" style="display:none;">Send message</button>
         </div>
       </form>
     </div>
