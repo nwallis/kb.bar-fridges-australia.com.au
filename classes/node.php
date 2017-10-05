@@ -31,8 +31,17 @@ class Node{
 
     $returnHTML = "<div class='col knowledgebase-column'>";
 
-    if (SmartyWrapper::adminAccess()){ 
-      $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
+    if ($fieldDescriptors){
+      SmartyWrapper::assign('dialogID', $this->id);
+      SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
+      SmartyWrapper::assign('childFields', $fieldDescriptors);
+      SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
+
+      if (SmartyWrapper::adminAccess()){ 
+        $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
+      }
+
+      SmartyWrapper::clearAll();
     }
 
     if ( file_exists($this->getContentPath()) || !isset($this->parent) ){
@@ -81,16 +90,6 @@ class Node{
         SmartyWrapper::display("./templates/404.tpl");
         die();
       }
-    }
-
-    if ($fieldDescriptors){
-      SmartyWrapper::assign('dialogID', $this->id);
-      SmartyWrapper::assign('fieldDescriptors', $fieldDescriptors);
-      SmartyWrapper::assign('childFields', $fieldDescriptors);
-      SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
-
-
-      SmartyWrapper::clearAll();
     }
 
     $returnHTML .= "</div>";
