@@ -3,6 +3,14 @@
     height: 50px;
 }
 
+.knowledgebase-column {
+    padding: 20px;
+}
+
+.knowledgebase-row {
+    padding: 10px 0;
+}
+
 
 /*.fridge-information{
     width:100%;

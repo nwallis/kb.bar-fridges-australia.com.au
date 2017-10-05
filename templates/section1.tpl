@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row knowledgebase-row">
   <div class="col">
     <a href="/{$nodeLink}">
       <img class="fridge-picture" src="/{$childFields.fridge_picture}" data-zoom-image="/{$childFields.fridge_picture}">

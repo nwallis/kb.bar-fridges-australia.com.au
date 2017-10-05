@@ -29,7 +29,7 @@ class Node{
     $fieldsDescriptionPath = $this->getContentPath() . NODE_FILENAME;
     $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath), true) : NULL;
 
-    $returnHTML = "<div class='col'>";
+    $returnHTML = "<div class='col knowledgebase-column'>";
 
     if ( file_exists($this->getContentPath()) || !isset($this->parent) ){
       $this->children = glob($this->getContentPath() . "*.node");
