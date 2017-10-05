@@ -11,7 +11,9 @@ use Knowledgebase\SEO;
 use Knowledgebase\SmartyWrapper;
 
 const CONTENT_DIRECTORY = "content";
+const NODE_FILENAME = "node.json";
 
+//init classes
 SmartyWrapper::init();
 SEO::init();
 
@@ -29,14 +31,14 @@ if (isset($_REQUEST['delete_node'])){
     $guid = $_REQUEST['edit_node_guid'];
     $parentNode = base64_decode($_REQUEST['parent_node']);
     $nodeFile = "$parentNode/$guid.node";
-    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.json"));
+    $fieldDescriptors = json_decode(file_get_contents("$parentNode/" . NODE_FILENAME));
     $originalJSON = json_decode(file_get_contents("$parentNode/$guid.node"), true);
 
     file_put_contents($nodeFile, Node::updateJSON($originalJSON, $fieldDescriptors));
 
     if (isset($fieldDescriptors->childFields)){
         $childDescriptionDirectory = "$parentNode$guid.children/";
-        file_put_contents($childDescriptionDirectory . "node.json", json_encode($fieldDescriptors->childFields));
+        file_put_contents($childDescriptionDirectory . NODE_FILENAME, json_encode($fieldDescriptors->childFields));
     }
 
     SEO::updateSEOName($guid, $_REQUEST['seo_name']);        
@@ -91,7 +93,7 @@ if (isset($_REQUEST['delete_node'])){
     $parentNode = base64_decode($_REQUEST['parent_node']);
     $nodeFile = "$parentNode/$guid.node";
 
-    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.json"));
+    $fieldDescriptors = json_decode(file_get_contents("$parentNode/" . NODE_FILENAME));
 
     //Save the node data under the parent node
     file_put_contents($nodeFile, Node::generateJSON($fieldDescriptors));
@@ -100,7 +102,7 @@ if (isset($_REQUEST['delete_node'])){
     if (isset($fieldDescriptors->childFields)){
         $childDescriptionDirectory = "$parentNode$guid.children/";
         mkdir($childDescriptionDirectory, 0777);
-        file_put_contents($childDescriptionDirectory . "node.json", json_encode($fieldDescriptors->childFields));
+        file_put_contents($childDescriptionDirectory . NODE_FILENAME, json_encode($fieldDescriptors->childFields));
     }
 
     //Cloning? Rsync all children from the nodetoClone to the new child directory 

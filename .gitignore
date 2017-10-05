@@ -10,3 +10,4 @@
 seo.map
 *.swo
 config.ini
+/content

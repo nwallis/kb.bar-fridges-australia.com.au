@@ -26,7 +26,7 @@ class Node{
 
   function toHTML(){
 
-    $fieldsDescriptionPath = $this->getContentPath() . "node.json";
+    $fieldsDescriptionPath = $this->getContentPath() . NODE_FILENAME;
     $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath), true) : NULL;
 
     $returnHTML = <<<HTML
