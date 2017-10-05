@@ -134,12 +134,10 @@ foreach ($nodePaths as $path){
     $root = $childNode;
 }
 
-$bodyHTML = "<table><tr>" . $root->toHTML() . "</tr></table>";
-
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    echo $bodyHTML;
+    echo $root->toHTML();
 }else{
-    SmartyWrapper::assign('bodyHTML', $bodyHTML);
+    SmartyWrapper::assign('bodyHTML', $root->toHTML());
     $html = SmartyWrapper::fetch("./templates/index.tpl");
     echo $html;
 }

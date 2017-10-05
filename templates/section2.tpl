@@ -1,4 +1,4 @@
-<div>
+<div class="col">
     <a href="/{$nodeLink}">
         <span class="{$selectedClass}">{$childFields.title}</span>
     </a>

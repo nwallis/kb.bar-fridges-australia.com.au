@@ -1,9 +1,10 @@
-.fridge-picture{
-    width:50px;
-    height:50px;
+.fridge-picture {
+    width: 50px;
+    height: 50px;
 }
 
-.fridge-information{
+
+/*.fridge-information{
     width:100%;
     height:70px;
     border:1px solid black;
@@ -18,51 +19,54 @@
 
 .fridge-information a{
     text-decoration:none;
-}
+}*/
 
-table{
-    width:100%;
+table {
+    width: 100%;
 }
 
 .kb-section {
     padding: 50px 50px 100px 50px;
     border: solid 1px black;
     vertical-align: top;
-    width:33.333%;
-    position:relative;
+    width: 33.333%;
+    position: relative;
 }
 
-.kb-selected{
-    background-color:green;
-    color:white;
+.kb-selected {
+    background-color: green;
+    color: white;
 }
 
-.add-node{
-    font-size:30px;
-    width:50px;
-    height:50px;
-    background-color:blue;
-    color:white;
-    position:absolute;
-    bottom:30px;
-    left:50px;
-    text-align:center;
-    line-height:50px;
-    cursor:pointer;
+.add-node {
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+    color: white;
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
 }
 
-.add-node:hover{
+.add-node:hover {}
+
+.clone-node,
+.delete-node,
+.edit-node {
+    cursor: pointer;
 }
 
-.clone-node, .delete-node, .edit-node{
-    cursor:pointer;
+.clone-dialog img,
+.edit-dialog img {
+    width: 100px;
+    height: auto;
 }
 
-.clone-dialog img, .edit-dialog img{
-    width:100px;
-    height:auto;
-}
 
-.default-text form label{
-   display:block; 
-}
+/*.default-text form label {
+    display: block;
+}*/

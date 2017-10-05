@@ -1,4 +1,4 @@
-<div class="default-text">
+<div class="col">
 
     {$nodeText}
 

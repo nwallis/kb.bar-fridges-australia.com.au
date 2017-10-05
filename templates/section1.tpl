@@ -1,4 +1,4 @@
-<div class="fridge-information">
+<div class="col">
     <a href="/{$nodeLink}">
         <img class="fridge-picture" src="/{$childFields.fridge_picture}" data-zoom-image="/{$childFields.fridge_picture}">
         <span class="{$selectedClass}">{$childFields.title}</span>
