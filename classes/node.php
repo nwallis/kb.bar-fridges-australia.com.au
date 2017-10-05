@@ -31,6 +31,10 @@ class Node{
 
     $returnHTML = "<div class='col knowledgebase-column'>";
 
+    if (SmartyWrapper::adminAccess()){ 
+      $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
+    }
+
     if ( file_exists($this->getContentPath()) || !isset($this->parent) ){
       $this->children = glob($this->getContentPath() . "*.node");
 
@@ -85,9 +89,6 @@ class Node{
       SmartyWrapper::assign('childFields', $fieldDescriptors);
       SmartyWrapper::assign('encodedContentPath', htmlspecialchars(base64_encode($this->getContentPath())));
 
-      if (SmartyWrapper::adminAccess()){ 
-        $returnHTML .= SmartyWrapper::fetch("./templates/settingsDialog.tpl");
-      }
 
       SmartyWrapper::clearAll();
     }
