@@ -36,7 +36,7 @@ if (isset($_REQUEST['delete_node'])){
 
     if (isset($fieldDescriptors->childFields)){
         $childDescriptionDirectory = "$parentNode$guid.children/";
-        file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
+        file_put_contents($childDescriptionDirectory . "node.json", json_encode($fieldDescriptors->childFields));
     }
 
     SEO::updateSEOName($guid, $_REQUEST['seo_name']);        
@@ -91,7 +91,7 @@ if (isset($_REQUEST['delete_node'])){
     $parentNode = base64_decode($_REQUEST['parent_node']);
     $nodeFile = "$parentNode/$guid.node";
 
-    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.fields"));
+    $fieldDescriptors = json_decode(file_get_contents("$parentNode/node.json"));
 
     //Save the node data under the parent node
     file_put_contents($nodeFile, Node::generateJSON($fieldDescriptors));
@@ -100,7 +100,7 @@ if (isset($_REQUEST['delete_node'])){
     if (isset($fieldDescriptors->childFields)){
         $childDescriptionDirectory = "$parentNode$guid.children/";
         mkdir($childDescriptionDirectory, 0777);
-        file_put_contents($childDescriptionDirectory . "node.fields", json_encode($fieldDescriptors->childFields));
+        file_put_contents($childDescriptionDirectory . "node.json", json_encode($fieldDescriptors->childFields));
     }
 
     //Cloning? Rsync all children from the nodetoClone to the new child directory 
@@ -138,7 +138,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     echo $bodyHTML;
 }else{
     SmartyWrapper::assign('bodyHTML', $bodyHTML);
-    $html .= SmartyWrapper::fetch("./templates/index.tpl");
+    $html = SmartyWrapper::fetch("./templates/index.tpl");
     echo $html;
 }
 
