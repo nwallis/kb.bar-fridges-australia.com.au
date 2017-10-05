@@ -60,56 +60,66 @@ if (isset($_REQUEST['delete_node'])){
     $response = json_decode(curl_exec($ch));
     if ($response->success){
         try{
-            $mandrill = new Mandrill('NZsXDD12NCoqydzeHph2fg');
-            $message = array(
-                'html' => $_REQUEST['message'],
-                'text' => $_REQUEST['message'],
-                'subject' => 'Knowledgebase Enquiry',
-                'from_email' => $_REQUEST['email'],
-                'from_name' => $_REQUEST['first_name'],
-                'to' => array(
-                    array(
-                        'email' => $config['email']['serviceEmail'],
-                        'name' => 'Service Department',
-                        'type' => 'to'
-                    )
-                ),
-                'headers' => array('Reply-To' => 'natewallis@gmail.com')
-            );
-            $result = $mandrill->messages->send($message);
+          $mandrill = new Mandrill('NZsXDD12NCoqydzeHph2fg');
+
+          //Render template to variable
+          SmartyWrapper::assign('name', $_REQUEST['first_name']);
+          SmartyWrapper::assign('email', $_REQUEST['email']);
+          SmartyWrapper::assign('phone', $_REQUEST['phone']);
+          SmartyWrapper::assign('message', $_REQUEST['message']);
+          $html_email = SmartyWrapper::fetch("./templates/html_email.tpl"); 
+          $plain_text_email = SmartyWrapper::fetch("./templates/plain_text_email.tpl"); 
+          SmartyWrapper::clearAll();
+
+          $message = array(
+            'html' => $html_email,
+            'text' => $plain_text_email,
+            'subject' => 'Knowledgebase Enquiry',
+            'from_email' => $_REQUEST['email'],
+            'from_name' => $_REQUEST['first_name'],
+            'to' => array(
+              array(
+                'email' => $config['email']['serviceEmail'],
+                'name' => 'Service Department',
+                'type' => 'to'
+              )
+            ),
+            'headers' => array('Reply-To' => 'natewallis@gmail.com')
+          );
+          $result = $mandrill->messages->send($message);
         } catch (Mandrill_Error $e){
         }
         echo SmartyWrapper::fetch("./templates/enquirySuccess.tpl"); 
     }else{
-        echo SmartyWrapper::fetch("./templates/enquiryFailure.tpl"); 
+      echo SmartyWrapper::fetch("./templates/enquiryFailure.tpl"); 
     }
 
     exit;
 
 }else if (isset($_REQUEST['parent_node'])){
 
-    //Generate a new guid for node name
-    $guid = SEO::GUID();
-    $parentNode = base64_decode($_REQUEST['parent_node']);
-    $nodeFile = "$parentNode/$guid.node";
+  //Generate a new guid for node name
+  $guid = SEO::GUID();
+  $parentNode = base64_decode($_REQUEST['parent_node']);
+  $nodeFile = "$parentNode/$guid.node";
 
-    $fieldDescriptors = json_decode(file_get_contents("$parentNode/" . NODE_FILENAME));
+  $fieldDescriptors = json_decode(file_get_contents("$parentNode/" . NODE_FILENAME));
 
-    //Save the node data under the parent node
-    file_put_contents($nodeFile, Node::generateJSON($fieldDescriptors));
+  //Save the node data under the parent node
+  file_put_contents($nodeFile, Node::generateJSON($fieldDescriptors));
 
-    //Create child fields
-    if (isset($fieldDescriptors->childFields)){
-        $childDescriptionDirectory = "$parentNode$guid.children/";
-        mkdir($childDescriptionDirectory, 0777);
-        file_put_contents($childDescriptionDirectory . NODE_FILENAME, json_encode($fieldDescriptors->childFields));
-    }
+  //Create child fields
+  if (isset($fieldDescriptors->childFields)){
+    $childDescriptionDirectory = "$parentNode$guid.children/";
+    mkdir($childDescriptionDirectory, 0777);
+    file_put_contents($childDescriptionDirectory . NODE_FILENAME, json_encode($fieldDescriptors->childFields));
+  }
 
-    //Cloning? Rsync all children from the nodetoClone to the new child directory 
-    if(isset($_REQUEST['clone_node'])) exec ("rsync -a $parentNode".$_REQUEST['clone_node'].".children/ $childDescriptionDirectory"); 
+  //Cloning? Rsync all children from the nodetoClone to the new child directory 
+  if(isset($_REQUEST['clone_node'])) exec ("rsync -a $parentNode".$_REQUEST['clone_node'].".children/ $childDescriptionDirectory"); 
 
-    //save seo name
-    if (isset($_REQUEST['seo_name'])) SEO::addSEOName($guid, $_REQUEST['seo_name']);        
+  //save seo name
+  if (isset($_REQUEST['seo_name'])) SEO::addSEOName($guid, $_REQUEST['seo_name']);        
 
 }
 
@@ -122,24 +132,24 @@ $nodePaths = strlen($trimmedServerURI) == 0 ? [CONTENT_DIRECTORY] : array_merge(
 
 foreach ($nodePaths as $path){
 
-    //remap the path if its not the root - rethink this.
-    if ($path != CONTENT_DIRECTORY) $path = SEO::getMapping($path);
-    $childNode = new Node($path);
+  //remap the path if its not the root - rethink this.
+  if ($path != CONTENT_DIRECTORY) $path = SEO::getMapping($path);
+  $childNode = new Node($path);
 
-    if (isset($root)){
-        $root->assignChild($childNode);
-        $childNode->assignParent($root);
-    }
+  if (isset($root)){
+    $root->assignChild($childNode);
+    $childNode->assignParent($root);
+  }
 
-    $root = $childNode;
+  $root = $childNode;
 }
 
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    echo $root->toHTML();
+  echo $root->toHTML();
 }else{
-    SmartyWrapper::assign('bodyHTML', $root->toHTML());
-    $html = SmartyWrapper::fetch("./templates/index.tpl");
-    echo $html;
+  SmartyWrapper::assign('bodyHTML', $root->toHTML());
+  $html = SmartyWrapper::fetch("./templates/index.tpl");
+  echo $html;
 }
 
 ?>
