@@ -29,9 +29,7 @@ class Node{
     $fieldsDescriptionPath = $this->getContentPath() . NODE_FILENAME;
     $fieldDescriptors = (file_exists($fieldsDescriptionPath)) ? json_decode(file_get_contents($fieldsDescriptionPath), true) : NULL;
 
-    $returnHTML = <<<HTML
-            <td class="kb-section">
-HTML;
+    $returnHTML = "<div class='col'>";
 
     if ( file_exists($this->getContentPath()) || !isset($this->parent) ){
       $this->children = glob($this->getContentPath() . "*.node");
@@ -94,7 +92,7 @@ HTML;
       SmartyWrapper::clearAll();
     }
 
-    $returnHTML .= "</td>";
+    $returnHTML .= "</div>";
 
     return (isset($this->parent) ? $this->parent->toHTML() : '') . $returnHTML;
 
@@ -142,7 +140,6 @@ HTML;
   } 
 
   static function updateNode($nodeFile){
-
   }
 
 }
