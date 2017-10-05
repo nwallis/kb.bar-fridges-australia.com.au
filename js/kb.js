@@ -56,24 +56,6 @@ function initElements() {
         generateSEO($(this));
     });
 
-    initDialog(".clone-dialog", "Clone");
-    initDialog(".settings-dialog", "Add new");
-    initDialog(".delete-dialog", "Delete");
-    initDialog(".edit-dialog", "Edit");
-
-    $(".add-node").click(function() {
-        initTinyMCE(this);
-    });
-    $(".edit-node").click(function() {
-        initTinyMCE(this);
-    });
-    $(".delete-node").click(function() {
-        initTinyMCE(this);
-    });
-    $(".clone-node").click(function() {
-        initTinyMCE(this);
-    });
-
     $(".fridge-picture").elevateZoom();
 }
 
@@ -94,7 +76,7 @@ function enquirySubmitted(e) {
 
 function captchaSubmitted(token) {
     tokenValue = token;
-    $("#enquiry-container input[type='submit']").show();
+    $("#enquiry-container button").show();
 }
 
 function generateSEO(element) {
@@ -129,13 +111,4 @@ function initTinyMCE(trigger) {
         }
     });
 
-}
-
-function initDialog(dialogClass, title) {
-    $(dialogClass).dialog({
-        autoOpen: false,
-        modal: true,
-        title: title,
-        width: 800
-    })
 }

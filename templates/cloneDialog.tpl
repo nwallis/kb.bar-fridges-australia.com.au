@@ -3,13 +3,19 @@
     <div class="modal-content">
       <form action="" method = "post" enctype="multipart/form-data">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add new...</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Clone...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          {include file="descriptors.tpl"}
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                {include file="descriptors.tpl"}
+              </div>
+            </div>
+          </div>
           <input type="hidden" name="parent_node" value="{$encodedContentPath}">
           <input type="hidden" name="clone_node" value="{$dialogID}">
         </div>
