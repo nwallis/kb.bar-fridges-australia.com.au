@@ -27,7 +27,7 @@
           </nav>
         </div>
       </div>
-      <div class="row">{$bodyHTML}</div>
+      <div class="row" id="ajax-container">{$bodyHTML}</div>
     </div>
   </body>
 </html>

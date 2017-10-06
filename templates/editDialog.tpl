@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-dialog-{$dialogID}" tabindex="-1" role="dialog" aria-labelledby="edit-dialog" aria-hidden="true">
+<div class="modal fade edit-dialog" id="edit-dialog-{$dialogID}" tabindex="-1" role="dialog" aria-labelledby="edit-dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form action="{$parentHREF}" method="post" enctype="multipart/form-data">

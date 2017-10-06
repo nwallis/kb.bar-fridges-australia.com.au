@@ -15,7 +15,6 @@ function initElements() {
     });
 
     $(".settings-dialog form, .edit-dialog form, .clone-dialog form").submit(function(e) {
-        generateSEO($(this).find('.kb-seo-translate'));
         tinyMCE.triggerSave();
         var formData = new FormData(this);
         $.ajax({
@@ -27,11 +26,12 @@ function initElements() {
             contentType: false,
             processData: false,
             success: function(data) {
-                $("body").html(data);
+                $("#ajax-container").html(data);
                 initElements();
             },
             error: function(xhr, err) {}
         });
+        $('.modal-backdrop').hide();
         return false;
     });
 
@@ -43,7 +43,7 @@ function initElements() {
             dataType: 'html',
             data: $(this).serialize(),
             success: function(data) {
-                $("body").html(data);
+                $("#ajax-container").html(data);
                 initElements();
                 window.location.href = parentHREF;
             },
