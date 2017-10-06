@@ -52,10 +52,6 @@ function initElements() {
         return false;
     });
 
-    /*$(".kb-seo-translate").keyup(function() {
-          generateSEO($(this));
-      });*/
-
     $(".fridge-picture").elevateZoom();
 }
 
