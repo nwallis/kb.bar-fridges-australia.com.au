@@ -14,6 +14,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="/js/jquery.elevateZoom-3.0.8.min.js"></script>
+    <script src="/js/tinymce/tinymce.min.js"></script>
     <script src="/js/kb.js"></script>
   </head>
   <body>

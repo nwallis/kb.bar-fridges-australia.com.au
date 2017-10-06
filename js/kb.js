@@ -52,9 +52,9 @@ function initElements() {
         return false;
     });
 
-    $(".kb-seo-translate").keyup(function() {
-        generateSEO($(this));
-    });
+    /*$(".kb-seo-translate").keyup(function() {
+          generateSEO($(this));
+      });*/
 
     $(".fridge-picture").elevateZoom();
 }
@@ -79,9 +79,9 @@ function captchaSubmitted(token) {
     $("#enquiry-container button").show();
 }
 
-function generateSEO(element) {
-    element.parent().siblings('.seo-name').val(convertToSEO(element.val()));
-}
+/*function generateSEO(element) {
+    element.siblings('.seo-name').val(convertToSEO(element.val()));
+}*/
 
 function initTinyMCE(trigger) {
 

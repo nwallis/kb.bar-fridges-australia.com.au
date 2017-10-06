@@ -72,9 +72,9 @@ class Node{
         $returnHTML .= SmartyWrapper::fetch("./templates/" . $fieldDescriptors['template']);
 
         if (SmartyWrapper::adminAccess()){ 
-                  $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
-                  $returnHTML .= SmartyWrapper::fetch("./templates/deleteDialog.tpl");
-                  $returnHTML .= SmartyWrapper::fetch("./templates/editDialog.tpl");
+          $returnHTML .= SmartyWrapper::fetch("./templates/cloneDialog.tpl");
+          $returnHTML .= SmartyWrapper::fetch("./templates/deleteDialog.tpl");
+          $returnHTML .= SmartyWrapper::fetch("./templates/editDialog.tpl");
         }
 
         SmartyWrapper::clearAll();
