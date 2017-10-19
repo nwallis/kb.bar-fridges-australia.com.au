@@ -1,9 +1,15 @@
-<div>
+<div class="row">
+  <div class="col">
     <a href="/{$nodeLink}">
-        <span class="{$selectedClass}">{$childFields.title}</span>
+      <span class="{$selectedClass}">{$childFields.title}</span>
     </a>
     {if $adminAccess}
-        <span class="delete-node" for="delete-dialog-{$dialogID}"><i class="fa fa-trash-o fa-lg"></i></span>
-        <span class="edit-node" for="edit-dialog-{$dialogID}"><i class="fa fa-pencil-square-o fa-lg"></i></span>
+    <button type="button" class="delete-node btn btn-primary" data-toggle="modal" data-target="#delete-dialog-{$dialogID}">
+      <span><i class="fa fa-trash-o fa-lg"></i></span>
+    </button>
+    <button type="button" class="edit-node btn btn-primary" data-toggle="modal" data-target="#edit-dialog-{$dialogID}">
+      <span><i class="fa fa-pencil-square-o fa-lg"></i></span>
+    </button>
     {/if}
+  </div>
 </div>

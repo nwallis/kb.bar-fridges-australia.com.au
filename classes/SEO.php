@@ -40,17 +40,26 @@ class SEO {
         self::updateMap();
     }
 
+    static function generateSEOName($text){
+      $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+      $text = trim($text, '-');
+      $text = strtolower($text);
+      $text = preg_replace('~[^-\w]+~', '', $text);
+      if (empty($text)) return time();
+      return $text;
+    }
+
     static function updateSEOName($nodeID, $seoName){
-        $oldSEOName = self::$seoMap->{$nodeID};
-        unset(self::$seoMap->{$nodeID});
-        unset(self::$seoMap->{$oldSEOName});
-        self::addSEOName($nodeID,  $seoName);
+      $oldSEOName = self::$seoMap->{$nodeID};
+      unset(self::$seoMap->{$nodeID});
+      unset(self::$seoMap->{$oldSEOName});
+      self::addSEOName($nodeID,  $seoName);
     }
 
     static function GUID()
     {
-        if (function_exists('com_create_guid') === true) return trim(com_create_guid(), '{}');
-        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+      if (function_exists('com_create_guid') === true) return trim(com_create_guid(), '{}');
+      return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
 
 }

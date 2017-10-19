@@ -5,17 +5,16 @@ $(function() {
 });
 
 function initElements() {
-    $("#enquiry-form").submit(function(e) {
-        var data = $(this).serialize();
+    $("#submit-enquiry-button").click(function(e) {
+        var data = $("#enquiry-form").serialize();
         data += "&token=" + tokenValue;
-        $.post("/", data, function(result) {
+        $.post("", data, function(result) {
             $("#enquiry-container").html(result);
         }, "html");
         return false;
     });
 
     $(".settings-dialog form, .edit-dialog form, .clone-dialog form").submit(function(e) {
-        generateSEO($(this).find('.kb-seo-translate'));
         tinyMCE.triggerSave();
         var formData = new FormData(this);
         $.ajax({
@@ -27,11 +26,12 @@ function initElements() {
             contentType: false,
             processData: false,
             success: function(data) {
-                $("body").html(data);
+                $("#ajax-container").html(data);
                 initElements();
             },
             error: function(xhr, err) {}
         });
+        $('.modal-backdrop').hide();
         return false;
     });
 
@@ -43,7 +43,7 @@ function initElements() {
             dataType: 'html',
             data: $(this).serialize(),
             success: function(data) {
-                $("body").html(data);
+                $("#ajax-container").html(data);
                 initElements();
                 window.location.href = parentHREF;
             },
@@ -52,14 +52,7 @@ function initElements() {
         return false;
     });
 
-    $(".kb-seo-translate").keyup(function() {
-        generateSEO($(this));
-    });
-
-    initDialog(".clone-dialog", "Clone");
-    initDialog(".settings-dialog", "Add new");
-    initDialog(".delete-dialog", "Delete");
-    initDialog(".edit-dialog", "Edit");
+    $(".fridge-picture").elevateZoom();
 
     $(".add-node").click(function() {
         initTinyMCE(this);
@@ -70,11 +63,9 @@ function initElements() {
     $(".delete-node").click(function() {
         initTinyMCE(this);
     });
-    $(".clone-node").click(function() {
-        initTinyMCE(this);
-    });
-
-    $(".fridge-picture").elevateZoom();
+    /*$(".clone-node").click(function() {
+          initTinyMCE(this);
+      });*/
 }
 
 function convertToSEO(inputString) {
@@ -94,24 +85,23 @@ function enquirySubmitted(e) {
 
 function captchaSubmitted(token) {
     tokenValue = token;
-    $("#enquiry-container input[type='submit']").show();
+    $("#enquiry-container button").show();
 }
 
-function generateSEO(element) {
-    element.parent().siblings('.seo-name').val(convertToSEO(element.val()));
-}
+/*function generateSEO(element) {
+    element.siblings('.seo-name').val(convertToSEO(element.val()));
+}*/
 
 function initTinyMCE(trigger) {
-
-    var targetDialogID = $(trigger).attr('for');
-    var targetDialog = $("#" + targetDialogID);
-    targetDialog.dialog("open");
+    console.log("hi there");
+    var targetDialogID = $(trigger).data('target');
+    var targetDialog = $(targetDialogID);
 
     tinymce.init({
         theme_advanced_resizing: true,
         theme_advanced_resize_horizontal: false,
         relative_urls: false,
-        selector: '#' + targetDialogID + ' textarea',
+        selector: targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
@@ -129,13 +119,4 @@ function initTinyMCE(trigger) {
         }
     });
 
-}
-
-function initDialog(dialogClass, title) {
-    $(dialogClass).dialog({
-        autoOpen: false,
-        modal: true,
-        title: title,
-        width: 800
-    })
 }
