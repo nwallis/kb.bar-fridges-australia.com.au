@@ -8,7 +8,7 @@ function initElements() {
     $("#submit-enquiry-button").click(function(e) {
         var data = $("#enquiry-form").serialize();
         data += "&token=" + tokenValue;
-        $.post("/", data, function(result) {
+        $.post("", data, function(result) {
             $("#enquiry-container").html(result);
         }, "html");
         return false;
