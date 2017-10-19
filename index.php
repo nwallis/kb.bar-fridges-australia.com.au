@@ -70,6 +70,7 @@ if (isset($_REQUEST['delete_node'])){
       SmartyWrapper::assign('email', $_REQUEST['email']);
       SmartyWrapper::assign('phone', $_REQUEST['phone']);
       SmartyWrapper::assign('message', $_REQUEST['message']);
+      SmartyWrapper::assign('issue_url', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
       $html_email = SmartyWrapper::fetch("./templates/html_email.tpl"); 
       $plain_text_email = SmartyWrapper::fetch("./templates/plain_text_email.tpl"); 
       SmartyWrapper::clearAll();

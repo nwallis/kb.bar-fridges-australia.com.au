@@ -1,1 +1,1 @@
-Name: {$name}, Email: {$email}, Phone: {$phone}, Message: {$message}
+Name: {$name}, Email: {$email}, Phone: {$phone}, Issue: {$issue_url}, Message: {$message}

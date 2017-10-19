@@ -18,6 +18,10 @@
     <td>{$phone}</td>
   </tr>
   <tr>
+    <td>Issue</td>
+    <td><a href="{$issue_url}">{$issue_url}</a></td>
+  </tr>
+  <tr>
     <td colspan="2">Message</td>
   </tr>
   <tr>
