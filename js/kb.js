@@ -53,6 +53,19 @@ function initElements() {
     });
 
     $(".fridge-picture").elevateZoom();
+
+    $(".add-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".edit-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".delete-node").click(function() {
+        initTinyMCE(this);
+    });
+    $(".clone-node").click(function() {
+        initTinyMCE(this);
+    });
 }
 
 function convertToSEO(inputString) {
