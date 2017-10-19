@@ -30,7 +30,7 @@
 <div class="form-group row">
   <label class="col-4">{$descriptor.name}</label>
   <div class="col-8">
-    <input class="form-control" type="text" name="fields[{$descriptor.key_name}]" value="{if isset($childFields.{$descriptor.key_name}) }{$childFields.{$descriptor.key_name}}{/if}">
+    <input class="form-control" type="text" name="fields[{$descriptor.key_name}]" value="{if isset($childFields.{$descriptor.key_name}) }{$childFields.{$descriptor.key_name}|escape}{/if}">
   </div>
 </div>
 
