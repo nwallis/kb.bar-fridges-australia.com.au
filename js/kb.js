@@ -63,9 +63,9 @@ function initElements() {
     $(".delete-node").click(function() {
         initTinyMCE(this);
     });
-    $(".clone-node").click(function() {
-        initTinyMCE(this);
-    });
+    /*$(".clone-node").click(function() {
+          initTinyMCE(this);
+      });*/
 }
 
 function convertToSEO(inputString) {
@@ -93,16 +93,15 @@ function captchaSubmitted(token) {
 }*/
 
 function initTinyMCE(trigger) {
-
-    var targetDialogID = $(trigger).attr('for');
-    var targetDialog = $("#" + targetDialogID);
-    targetDialog.dialog("open");
+    console.log("hi there");
+    var targetDialogID = $(trigger).data('target');
+    var targetDialog = $(targetDialogID);
 
     tinymce.init({
         theme_advanced_resizing: true,
         theme_advanced_resize_horizontal: false,
         relative_urls: false,
-        selector: '#' + targetDialogID + ' textarea',
+        selector: targetDialogID + ' textarea',
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",

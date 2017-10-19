@@ -11,24 +11,6 @@
     padding: 10px 0;
 }
 
-
-/*.fridge-information{
-    width:100%;
-    height:70px;
-    border:1px solid black;
-    padding:10px;
-    box-sizing:border-box;
-}
-
-.fridge-information span{
-    font-size:16px; 
-    padding-left:10px;
-}
-
-.fridge-information a{
-    text-decoration:none;
-}*/
-
 table {
     width: 100%;
 }
@@ -46,35 +28,8 @@ table {
     color: white;
 }
 
-.add-node {
-    font-size: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-    color: white;
-    position: absolute;
-    bottom: 30px;
-    left: 50px;
-    text-align: center;
-    line-height: 50px;
-    cursor: pointer;
-}
-
-.add-node:hover {}
-
-.clone-node,
-.delete-node,
-.edit-node {
-    cursor: pointer;
-}
-
 .clone-dialog img,
 .edit-dialog img {
     width: 100px;
     height: auto;
 }
-
-
-/*.default-text form label {
-    display: block;
-}*/

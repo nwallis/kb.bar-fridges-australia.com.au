@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#settings-dialog-{$dialogID}">+</button>
+    <button type="button" class="add-node btn btn-primary" data-toggle="modal" data-target="#settings-dialog-{$dialogID}">+</button>
     <div class="modal fade settings-dialog" id="settings-dialog-{$dialogID}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
