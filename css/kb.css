@@ -33,3 +33,7 @@ table {
     width: 100px;
     height: auto;
 }
+
+.jumbotron img {
+    max-width: 100%;
+}
